@@ -1,7 +1,6 @@
 from challenge.model import DelayModel
 from fastapi import FastAPI, HTTPException
 import pandas as pd
-import uvicorn
 
 app = FastAPI()
 delay_model = DelayModel()
@@ -21,14 +20,10 @@ async def post_predict(data: dict) -> dict:
 
     # Convertir los datos de vuelo en un DataFrame
     df = pd.DataFrame(flights_data)
-
     # Preprocesar los datos utilizando DelayModel
     features = delay_model.preprocess(df)    
     # Realizar predicciones utilizando DelayModel
     predictions = delay_model.predict(features)
     response= {"predict":predictions}
-
     return response
 
-if __name__ == "__main__":
-    uvicorn.run(app, host="0.0.0.0", port=8080)
